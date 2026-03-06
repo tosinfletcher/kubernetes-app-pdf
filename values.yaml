@@ -20,20 +20,20 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext:
-  fsGroup: 1000
+podSecurityContext: {}
+  # fsGroup: 1000
 
-securityContext: {}
+securityContext:
   # capabilities:
   #   drop:
   #   - ALL
-  readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 1000
+  readOnlyRootFilesystem: false
+  runAsNonRoot: false
+  runAsUser: 0
 
 service:
   type: LoadBalancer
-  port: 8080
+  port: 80
   targetPort: 8080
   nodePort: null
 
@@ -54,11 +54,11 @@ ingress:
 # Resources configuration
 resources:
   limits:
+    cpu: 1000m
+    memory: 2Gi
+  requests:
     cpu: 500m
     memory: 1Gi
-  requests:
-    cpu: 250m
-    memory: 512Mi
 
 autoscaling:
   enabled: false
@@ -68,30 +68,35 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 # Liveness and readiness probes
-livenessProb:
+startupProbe:
   httpGet:
-    path: /
+    path: /login
     port: 8080
-  initialDeplaySeconds: 30
+  failureThreshold: 30
   periodSeconds: 10
-  timeoutSeconds: 5
+
+livenessProbe:
+  httpGet:
+    path: /login
+    port: 8080
+  periodSeconds: 20
   failureThreshold: 3
 
 readinessProbe:
   httpGet:
-    path: /
+    path: /login
     port: 8080
-  initialDeplaySeconds: 10
-  periodSeconds: 5
-  timeoutSeconds: 3
+  periodSeconds: 10
   failureThreshold: 3
+
+
 
 # Environment variables
 env:
   # General settings
   LOG_LEVEL: "INFO"
   # Stirling PDF specific settings
-  JAVA_OPTS: "-Xmx768m"
+  JAVA_OPTS: "-Xmx1024m"
 
 nodeSelector: {}
 
