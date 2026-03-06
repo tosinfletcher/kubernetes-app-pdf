@@ -1,0 +1,17 @@
+apiVersion: v2
+name: pdf
+description: A Helm chart for deploying Stirling PDF
+type: application
+version: 0.1.0
+appVersion: "latest"
+home: https://github.com/tosinfletcher/kubernetes-app-pdf.git
+sources:
+  - https://github.com/tosinfletcher/kubernetes-app-pdf.git
+maintainers:
+  - name: Tosin Fletcher
+    email: tosinfletcher@example.com
+keywords:
+  - pdf
+  - document
+  - conversion
+  - office
